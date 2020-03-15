@@ -1,7 +1,6 @@
 package markdown
 
 import (
-    "fmt"
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/util"
@@ -46,74 +45,57 @@ func (r *Renderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer) {
 }
 
 func (r *Renderer) renderDocument(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderDocument", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderHeading(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderHeading", entering)
-
     n := node.(*ast.Heading)
     if entering {
         for i := 0; i < n.Level; i++ {
             _ = w.WriteByte('#')
         }
         _ = w.WriteByte(' ')
-    } else {
-        _ = w.WriteByte('\n')
+    } else if _, ok := node.NextSibling().(ast.Node); ok && node.FirstChild() != nil {
+        _, _ = w.WriteString("\n")
     }
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderBlockquote(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderBlockquote", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderCodeBlock(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderCodeBlock", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderFencedCodeBlock(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderFencedCodeBlock", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderHTMLBlock(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderHTMLBlock", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderList(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderList", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderListItem(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderListItem", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderParagraph(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderParagraph", entering)
-
     if !entering {
-        _ = w.WriteByte('\n')
+		if _, ok := node.NextSibling().(ast.Node); ok && node.FirstChild() != nil {
+            _, _ = w.WriteString("\n\n")
+		}
     }
+
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderTextBlock(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderTextBlock", entering)
-
 	if !entering {
 		if _, ok := node.NextSibling().(ast.Node); ok && node.FirstChild() != nil {
 			_ = w.WriteByte('\n')
@@ -123,50 +105,34 @@ func (r *Renderer) renderTextBlock(w util.BufWriter, source []byte, node ast.Nod
 }
 
 func (r *Renderer) renderThematicBreak(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderThematicBreak", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderAutoLink(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderAutoLink", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderCodeSpan(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderCodeSpan", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderEmphasis(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderEmphasis", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderImage(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderImage", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderLink(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderLink", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderRawHTML(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderRawHTML", entering)
-
 	return ast.WalkContinue, nil
 }
 
 func (r *Renderer) renderText(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderText", entering)
-
 	if !entering {
 		return ast.WalkContinue, nil
 	}
@@ -189,7 +155,5 @@ func (r *Renderer) renderText(w util.BufWriter, source []byte, node ast.Node, en
 }
 
 func (r *Renderer) renderString(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
-    fmt.Println("renderString", entering)
-
 	return ast.WalkContinue, nil
 }
